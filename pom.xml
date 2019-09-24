@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.org.pti</groupId>
-	<artifactId>kafkaProducer</artifactId>
+	<artifactId>kafkaBroker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>kafkaProducer</name>
-	<description>Source code for a generic kafka producer</description>
+	<name>kafkaBroker</name>
+	<description>Source code for a generic kafka broker</description>
 
 	<properties>
 		<java.version>1.8</java.version>
