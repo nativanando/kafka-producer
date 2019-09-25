@@ -7,3 +7,8 @@ docker exec -ti 3fab8db0fd87 kafka-topics --describe --topic first-data-topic --
 
 docker exec -ti 3fab8db0fd87 kafka-console-consumer --bootstrap-server kafka:9092 --topic first-data-topic --from-beginning
 
+docker exec -ti kafka-single-node_kafka_1 kafka-topics --describe --topic topic_1 --zookeeper zookeeper:2181
+
+docker exec -ti kafka-single-node_kafka_1 kafka-topics --list --zookeeper zookeeper:2181
+
+
