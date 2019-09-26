@@ -4,12 +4,6 @@
  */
 package br.org.pti.broker;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -41,4 +35,3 @@ public class KafkaBrokerApplication implements CommandLineRunner {
 	}
 
 }
-
