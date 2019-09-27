@@ -5,6 +5,7 @@
 package br.org.pti.broker.service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -57,24 +58,23 @@ public class SenderService {
 			threadPool.submit(new Runnable() {
 				public void run() {
 					long increment = 0L;
-						Random temperature = new Random();
-						Date currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
-						String uniqueID = UUID.randomUUID().toString();
-						JSONObject message = new JSONObject();
-						int year = Calendar.getInstance().get(Calendar.YEAR);
+					Random temperature = new Random();
+					Date currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+					String uniqueID = UUID.randomUUID().toString();
+					JSONObject message = new JSONObject();
+					Integer year = Calendar.getInstance().get(Calendar.YEAR);
 
-						message.put("device_id", uniqueID);
-						message.put("data_name", "temperatura");
-						message.put("data_release_date", currentTimestamp.getTime());
-						message.put("data_release_year", year);
-						message.put("data_value", temperature.nextFloat() * (50 - 0));
+					message.put("device_id", uniqueID);
+					message.put("data_name", "temperatura");
+					message.put("data_release_date", currentTimestamp.getTime());
+					message.put("data_release_year", year);
+					message.put("data_value", temperature.nextFloat() * (50 - 0));
 
-						increment = increment + 1L;
-						LOG.info("Sendind message='{}' to topic='{}' and number of message = " + increment + "",
-								message.toString(), topic);
-						kafkaTemplate.send(topic, message.toString());
+					increment = increment + 1L;
+					LOG.info("Sendind message='{}' to topic='{}' and number of message = " + increment + "",
+							message.toString(), topic);
+					kafkaTemplate.send(topic, message.toString());
 
-					
 				}
 			});
 		} // more unrelated code is not show (thread shutdown, etc.)
