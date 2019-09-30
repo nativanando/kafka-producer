@@ -54,29 +54,88 @@ public class SenderService {
 	public void createThreads() {
 		ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
-		for (int i = 0; i < 5; i++) { // create 5 threads
+		for (int i = 0; i < 200; i++) { // create 5 threads
 			threadPool.submit(new Runnable() {
 				public void run() {
-					long increment = 0L;
-					Random temperature = new Random();
-					Date currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
-					String uniqueID = UUID.randomUUID().toString();
-					JSONObject message = new JSONObject();
-					Integer year = Calendar.getInstance().get(Calendar.YEAR);
+					try {
+						while (true) {
+							long increment = 0L;
+							Random temperature = new Random();
+							Date currentTimestamp = new Date();
+							JSONObject message = new JSONObject();
+							Integer year = getRandomNumberInRange();
+							Long uniqueID = generateLongId();
+				            LocalDate randomDate = generateRandomDate(year);
+				            Timestamp randomDateTime = Timestamp.valueOf(randomDate.atStartOfDay());
 
-					message.put("device_id", uniqueID);
-					message.put("data_name", "temperatura");
-					message.put("data_release_date", currentTimestamp.getTime());
-					message.put("data_release_year", year);
-					message.put("data_value", temperature.nextFloat() * (50 - 0));
+							message.put("device_id", uniqueID);
+							message.put("data_name", generateSensorName());
+							message.put("data_release_date", randomDateTime.getTime());
+							message.put("data_release_year", year);
+							message.put("data_value", temperature.nextFloat() * (50 - 0));
 
-					increment = increment + 1L;
-					LOG.info("Sendind message='{}' to topic='{}' and number of message = " + increment + "",
-							message.toString(), topic);
-					kafkaTemplate.send(topic, message.toString());
+							increment = increment + 1L;
+							LOG.info("Sendind message='{}' to topic='{}' and number of message = " + increment + "",
+									message.toString(), topic);
+							kafkaTemplate.send(topic, message.toString());
+							Thread.sleep(1000);
+						}
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 				}
 			});
 		} // more unrelated code is not show (thread shutdown, etc.)
 	}
+
+	/**
+	 * @return
+	 */
+	public Long generateLongId() {
+		long leftLimit = 1L;
+		long rightLimit = 20L;
+		long generatedLong = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
+		return generatedLong;
+	}
+
+	/**
+	 * @return
+	 */
+	public String generateSensorName() {
+		String[] arr = { "temperatura", "umidadae", "pressao", "gas", "luminosidade", "proximidade", "corrente",
+				"vibracao", "luz", "frequencia" };
+		Random r = new Random();
+		int randomNumber = r.nextInt(arr.length);
+		return arr[randomNumber];
+	}
+
+	/**
+	 * @return
+	 */
+	public int getRandomNumberInRange() {
+		Random r = new Random();
+		return r.nextInt((2019 - 2015) + 1) + 2015;
+	}
+
+	/**
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public int createRandomIntBetween(int start, int end) {
+		return start + (int) Math.round(Math.random() * (end - start));
+	}
+
+	/**
+	 * @param year
+	 * @return
+	 */
+	public LocalDate generateRandomDate(int year) {
+		int day = createRandomIntBetween(1, 28);
+		int month = createRandomIntBetween(1, 12);
+        return LocalDate.of(year, month, day);
+	}
+
 }
