@@ -1,5 +1,6 @@
 /**
  * This file represents a kafka agent to send messages in a specific topic
+ * The topic can be modified or specified on application.properties file
  * 
  */
 package br.org.pti.broker.service;
@@ -51,6 +52,9 @@ public class SenderService {
 		}
 	}
 
+	/**
+	 * Create an agent to send 200 messages per second to broker
+	 */
 	public void createThreads() {
 		ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
@@ -65,8 +69,8 @@ public class SenderService {
 							JSONObject message = new JSONObject();
 							Integer year = getRandomNumberInRange();
 							Long uniqueID = generateLongId();
-				            LocalDate randomDate = generateRandomDate(year);
-				            Timestamp randomDateTime = Timestamp.valueOf(randomDate.atStartOfDay());
+							LocalDate randomDate = generateRandomDate(year);
+							Timestamp randomDateTime = Timestamp.valueOf(randomDate.atStartOfDay());
 
 							message.put("device_id", uniqueID);
 							message.put("data_name", generateSensorName());
@@ -91,7 +95,7 @@ public class SenderService {
 	}
 
 	/**
-	 * @return
+	 * @return Long
 	 */
 	public Long generateLongId() {
 		long leftLimit = 1L;
@@ -101,7 +105,7 @@ public class SenderService {
 	}
 
 	/**
-	 * @return
+	 * @return String
 	 */
 	public String generateSensorName() {
 		String[] arr = { "temperatura", "umidadae", "pressao", "gas", "luminosidade", "proximidade", "corrente",
@@ -112,7 +116,7 @@ public class SenderService {
 	}
 
 	/**
-	 * @return
+	 * @return int
 	 */
 	public int getRandomNumberInRange() {
 		Random r = new Random();
@@ -122,7 +126,7 @@ public class SenderService {
 	/**
 	 * @param start
 	 * @param end
-	 * @return
+	 * @return int
 	 */
 	public int createRandomIntBetween(int start, int end) {
 		return start + (int) Math.round(Math.random() * (end - start));
@@ -130,12 +134,12 @@ public class SenderService {
 
 	/**
 	 * @param year
-	 * @return
+	 * @return LocalDate
 	 */
 	public LocalDate generateRandomDate(int year) {
 		int day = createRandomIntBetween(1, 28);
 		int month = createRandomIntBetween(1, 12);
-        return LocalDate.of(year, month, day);
+		return LocalDate.of(year, month, day);
 	}
 
 }
