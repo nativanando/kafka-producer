@@ -58,7 +58,7 @@ public class SenderService {
 	public void createThreads() {
 		ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
-		for (int i = 0; i < 200; i++) { // create 5 threads
+		for (int i = 0; i < 15; i++) { // create 5 threads
 			threadPool.submit(new Runnable() {
 				public void run() {
 					try {
