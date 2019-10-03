@@ -10,7 +10,7 @@ CREATE TABLE data (
 	device_id UUID,
 	data_release_date TIMESTAMP,
 	data_release_year int,
-	PRIMARY KEY((device_id, data_name), data_release_date) 
+	PRIMARY KEY((device_id, data_name, data_release_year), data_release_date) 
 ) WITH CLUSTERING ORDER BY (data_release_date DESC);
 
 
