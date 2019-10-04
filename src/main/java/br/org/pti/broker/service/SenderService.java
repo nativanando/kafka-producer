@@ -7,10 +7,8 @@ package br.org.pti.broker.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,7 +56,7 @@ public class SenderService {
 	public void createThreads() {
 		ExecutorService threadPool = Executors.newFixedThreadPool(200);
 
-		for (int i = 0; i < 200; i++) { // create 5 threads
+		for (int i = 0; i < 400; i++) { // create 5 threads
 			threadPool.submit(new Runnable() {
 				public void run() {
 					try {
