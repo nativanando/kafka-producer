@@ -7,6 +7,7 @@ package br.org.pti.broker.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -54,21 +55,21 @@ public class SenderService {
 	 * Create an agent to send 200 messages per second to broker
 	 */
 	public void createThreads() {
-		ExecutorService threadPool = Executors.newFixedThreadPool(200);
+		ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
-		for (int i = 0; i < 400; i++) { // create 5 threads
+		for (int i = 0; i < 10; i++) { // create 5 threads
 			threadPool.submit(new Runnable() {
 				public void run() {
 					try {
 						while (true) {
 							long increment = 0L;
-							Random temperature = new Random();
+							Random temperature = new Random();	
 							Date currentTimestamp = new Date();
 							JSONObject message = new JSONObject();
 							Integer year = getRandomNumberInRange();
 							Long uniqueID = generateLongId();
-							LocalDate randomDate = generateRandomDate(year);
-							Timestamp randomDateTime = Timestamp.valueOf(randomDate.atStartOfDay());
+							LocalDateTime randomDate = generateRandomDate(year);
+							Timestamp randomDateTime = Timestamp.valueOf(randomDate);
 
 							message.put("device_id", uniqueID);
 							message.put("data_name", generateSensorName());
@@ -134,10 +135,13 @@ public class SenderService {
 	 * @param year
 	 * @return LocalDate
 	 */
-	public LocalDate generateRandomDate(int year) {
+	public LocalDateTime generateRandomDate(int year) {
 		int day = createRandomIntBetween(1, 28);
 		int month = createRandomIntBetween(1, 12);
-		return LocalDate.of(year, month, day);
+		int hour = createRandomIntBetween(1, 23);
+		int minute = createRandomIntBetween(1, 59);
+		int second = createRandomIntBetween(1, 59);
+		return LocalDateTime.of(year, month, day, hour, minute, second);
 	}
 
 }
